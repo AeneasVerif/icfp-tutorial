@@ -1,0 +1,4 @@
+*~
+target/
+*.llbc
+.lake/
