@@ -19,7 +19,6 @@ def mul2_add1 (x : U32) : Result U32 :=
 #check U32.add_spec
 
 /-- Theorem about `mul2_add1`: without the `progress` tactic -/
--- @[pspec]
 theorem mul2_add1_spec (x : U32) (h : 2 * ↑x + 1 ≤ U32.max)
   : ∃ y, mul2_add1 x = ok y ∧
   ↑y = 2 * ↑x + (1 : Int)

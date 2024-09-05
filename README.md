@@ -1,13 +1,14 @@
 # Installation
 
 **Recommended**: the installation should only take a few minutes:
-1. clone this repo
-2. install [Visual Studio Code](https://code.visualstudio.com)
-3. install the **Lean 4** extension (*warning*: do not confuse it with the *Lean 3*
+1. Clone this repo
+2. Install [Visual Studio Code](https://code.visualstudio.com)
+3. Install the **Lean 4** extension (*warning*: do not confuse it with the *Lean 3*
    extension)
-4. open this folder inside of VS Code
-5. open the file  `Tutorial/Exercises.lean`
-6. wait for Lean to download and build the project dependencies
+4. Open this folder inside of VS Code (`File` > `Open folder`)
+5. Open the file  `Tutorial/Exercises.lean` (by using the explorer on the left)
+6. Wait for Lean to download and build the project dependencies.
+   You may have to click on the `Restart file` button (on the bottom right)
 
 **If you do not want to use VS Code**, you can directly [install
 Lean](https://lean-lang.org/lean4/doc/setup.html), then run `lake build` and finally open
