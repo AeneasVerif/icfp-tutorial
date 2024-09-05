@@ -23,12 +23,7 @@ theorem mul2_add1_spec (x : U32) (h : 2 * ↑x + 1 ≤ U32.max)
   : ∃ y, mul2_add1 x = ok y ∧
   ↑y = 2 * ↑x + (1 : Int)
   := by
-  rw [mul2_add1]
-  have ⟨ x1, hEq1, hPost1 ⟩ := @U32.add_spec x x (by scalar_tac)
-  simp [hEq1]
-  have ⟨ x2, hEq2, hPost2 ⟩ := @U32.add_spec x1 1#u32 (by scalar_tac)
-  simp [hEq2]
-  scalar_tac
+  sorry
 
 /-- Theorem about `mul2_add1`: with the `progress` tactic -/
 -- @[pspec]
@@ -36,10 +31,7 @@ theorem mul2_add1_spec' (x : U32) (h : 2 * ↑x + 1 ≤ U32.max)
   : ∃ y, mul2_add1 x = ok y ∧
   ↑y = 2 * ↑x + (1 : Int)
   := by
-  rw [mul2_add1]
-  progress with U32.add_spec as ⟨ x1 ⟩
-  progress as ⟨ x2 ⟩
-  scalar_tac
+  sorry
 
 /- [tutorial::mul2_add1_add]:
    Source: 'src/lib.rs', lines 15:0-15:43 -/
@@ -52,10 +44,7 @@ def mul2_add1_add (x : U32) (y : U32) : Result U32 :=
 theorem mul2_add1_add_spec (x : U32) (y : U32) (h : 2 * ↑x + 1 + ↑y ≤ U32.max) :
   ∃ z, mul2_add1_add x y = ok z ∧
   ↑z = 2 * ↑x + (1 : Int) + ↑y := by
-  rw [mul2_add1_add]
-  progress with mul2_add1_spec as ⟨ x1 ⟩
-  progress as ⟨ x2 ⟩
-  scalar_tac
+  sorry
 
 /- [tutorial::CList]
    Source: 'src/lib.rs', lines 32:0-32:17 -/
@@ -268,7 +257,7 @@ example α (hd : α) (tl : List α) : (hd :: tl).length = tl.length + 1 := by
 /- Your turn!
 
    Note that we give **tips and tricks** in the solutions: we advise to always have a look at them
-   after you completed a proof.
+   after you complete a proof.
  -/
 example α (n : Nat) (x y : α) (l0 l1 l2 : List α)
   (h0 : l1 = x :: l0)
@@ -345,7 +334,7 @@ example (x : U32) : 0 ≤ x.val ∧ x.val ≤ 2 ^ 32 - 1 := by scalar_tac
 
 /- Renaming: note that the variables which appear in grey are variables which you can't
    reference directly, either because Lean automatically introduced fresh names for them,
-   or because they are shadowed. You can use the `rename` and `rename_i` tactics to rename$
+   or because they are shadowed. You can use the `rename` and `rename_i` tactics to rename
    them. -/
 example α (p q r : α → Prop) (h : ∀ x, p x) (h : ∀ x, p x → q x) (h : ∀ x, q x → r x) :
   ∀ x, r x := by
@@ -374,7 +363,7 @@ set_option pp.coercions true
 
 /- # Reasoning about lists
 
-   Small preparation for theorem `list_nth_mut1`.
+   Small preparation for the theorem `list_nth_mut1`.
  -/
 
 /- Reasoning about `List.index`.

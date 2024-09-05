@@ -6,6 +6,39 @@ set_option maxHeartbeats 1000000
 
 namespace tutorial
 
+/- # Demo -/
+
+/-- Theorem about `mul2_add1`: without the `progress` tactic -/
+theorem mul2_add1_spec (x : U32) (h : 2 * ↑x + 1 ≤ U32.max)
+  : ∃ y, mul2_add1 x = ok y ∧
+  ↑y = 2 * ↑x + (1 : Int)
+  := by
+  rw [mul2_add1]
+  have ⟨ x1, hEq1, hPost1 ⟩ := @U32.add_spec x x (by scalar_tac)
+  simp [hEq1]
+  have ⟨ x2, hEq2, hPost2 ⟩ := @U32.add_spec x1 1#u32 (by scalar_tac)
+  simp [hEq2]
+  scalar_tac
+
+/-- Theorem about `mul2_add1`: with the `progress` tactic -/
+@[pspec]
+theorem mul2_add1_spec' (x : U32) (h : 2 * ↑x + 1 ≤ U32.max)
+  : ∃ y, mul2_add1 x = ok y ∧
+  ↑y = 2 * ↑x + (1 : Int)
+  := by
+  rw [mul2_add1]
+  progress with U32.add_spec as ⟨ x1 ⟩
+  progress as ⟨ x2 ⟩
+  scalar_tac
+
+theorem mul2_add1_add_spec (x : U32) (y : U32) (h : 2 * ↑x + 1 + ↑y ≤ U32.max) :
+  ∃ z, mul2_add1_add x y = ok z ∧
+  ↑z = 2 * ↑x + (1 : Int) + ↑y := by
+  rw [mul2_add1_add]
+  progress as ⟨ x1 ⟩
+  progress as ⟨ x2 ⟩
+  scalar_tac
+
 /- # Basic tactics -/
 
 /- Exercise 1: Version 1: -/
