@@ -308,7 +308,7 @@ example (a b c : Prop) (h0 : a → b → c) (h1 : a) (h2 : b) : c := by
   simp_all
 
 /- Your turn! -/
-example (a b c d : Prop) (h0 : a → b → c) (h1 : c → d → e)
+example (a b c d e : Prop) (h0 : a → b → c) (h1 : c → d → e)
   (ha : a) (hb : b) (hd : d) : e := by
   sorry
 
