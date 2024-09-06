@@ -3,6 +3,8 @@
 **Recommended**: the installation should only take a few minutes:
 1. Clone this repo
 2. Install [Visual Studio Code](https://code.visualstudio.com)
+   **Warning**: VS Codium doesn't work for this tutorial (people who tried had issues with
+   the Lean4 extension).
 3. Install the **Lean 4** extension (*warning*: do not confuse it with the *Lean 3*
    extension)
 4. Open this folder inside of VS Code (`File` > `Open folder`)
