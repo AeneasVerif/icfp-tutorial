@@ -14,6 +14,10 @@
 Lean](https://lean-lang.org/lean4/doc/setup.html), then run `lake build` and finally open
 the file `Tutorial/Exercises.lean`.
 
+# Zulip
+
+If you have questions, do not hesitate to join the [Zulip](https://aeneas-verif.zulipchat.com/)!
+
 # Generating the .lean files
 
 In order to minimize the setup time, we will not install Charon and Aeneas during this
