@@ -466,7 +466,7 @@ divergent def list_tail_loop
   | CList.CNil => Result.ok (CList.CNil, Result.ok)
 
 /- [tutorial::list_tail]:
-   Source: 'src/lib.rs', lines 118:0-118:68 -/
+   Source: 'src/lib.rs', lines 134:0-139:1 -/
 @[reducible]
 def list_tail
   (T : Type) (l : CList T) :
@@ -475,7 +475,7 @@ def list_tail
   list_tail_loop T l
 
 /- [tutorial::append_in_place]:
-   Source: 'src/lib.rs', lines 125:0-125:67 -/
+   Source: 'src/lib.rs', lines 141:0-144:1 -/
 def append_in_place
   (T : Type) (l0 : CList T) (l1 : CList T) : Result (CList T) :=
   do
@@ -540,7 +540,7 @@ theorem reverse_spec {T : Type} (l : CList T) :
 attribute [-simp] Int.reducePow Nat.reducePow
 
 /- [tutorial::zero]: loop 0:
-   Source: 'src/lib.rs', lines 6:4-11:1 -/
+   Source: 'src/lib.rs', lines 163:4-168:1 -/
 divergent def zero_loop
   (x : alloc.vec.Vec U32) (i : Usize) : Result (alloc.vec.Vec U32) :=
   let i1 := alloc.vec.Vec.len U32 x
@@ -591,7 +591,7 @@ theorem zero_loop_spec
   sorry
 
 /- [tutorial::zero]:
-   Source: 'src/lib.rs', lines 5:0-5:28 -/
+   Source: 'src/lib.rs', lines 162:0-168:1 -/
 def zero (x : alloc.vec.Vec U32) : Result (alloc.vec.Vec U32) :=
   zero_loop x 0#usize
 
@@ -634,7 +634,7 @@ theorem zero_spec (x : alloc.vec.Vec U32) :
   sorry
 
 /- [tutorial::add_no_overflow]: loop 0:
-   Source: 'src/lib.rs', lines 19:4-24:1 -/
+   Source: 'src/lib.rs', lines 176:4-181:1 -/
 divergent def add_no_overflow_loop
   (x : alloc.vec.Vec U32) (y : alloc.vec.Vec U32) (i : Usize) :
   Result (alloc.vec.Vec U32)
@@ -708,7 +708,7 @@ theorem add_no_overflow_loop_spec
   sorry
 
 /- [tutorial::add_no_overflow]:
-   Source: 'src/lib.rs', lines 18:0-18:50 -/
+   Source: 'src/lib.rs', lines 175:0-181:1 -/
 def add_no_overflow
   (x : alloc.vec.Vec U32) (y : alloc.vec.Vec U32) :
   Result (alloc.vec.Vec U32)
@@ -726,7 +726,7 @@ theorem add_no_overflow_spec (x : alloc.vec.Vec U32) (y : alloc.vec.Vec U32)
   sorry
 
 /- [tutorial::add_with_carry]: loop 0:
-   Source: 'src/lib.rs', lines 39:4-50:1 -/
+   Source: 'src/lib.rs', lines 188:4-199:1 -/
 divergent def add_with_carry_loop
   (x : alloc.vec.Vec U32) (y : alloc.vec.Vec U32) (c0 : U8) (i : Usize) :
   Result (U8 × (alloc.vec.Vec U32))
@@ -774,7 +774,7 @@ theorem add_with_carry_loop_spec
   sorry
 
 /- [tutorial::add_with_carry]:
-   Source: 'src/lib.rs', lines 37:0-37:55 -/
+   Source: 'src/lib.rs', lines 186:0-199:1 -/
 def add_with_carry
   (x : alloc.vec.Vec U32) (y : alloc.vec.Vec U32) :
   Result (U8 × (alloc.vec.Vec U32))
