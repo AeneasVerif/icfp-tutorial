@@ -45,3 +45,14 @@ ln -s ../charon charon
 ```
 
 4. Run `make`
+
+Note: `make` will simply run the following commands:
+
+1. We first need to call Charon to retrieve the AST of the program.
+   The following command generates the `tutorial.llbc` file, which contains the LLBC of
+   the program (LLBC is a cleaned up version of MIR, one of the intermediate languages
+   used by the Rust compiler - Charon links itself to the Rust compiler to retrieve this
+   AST):
+   `cd source && ../charon/bin/charon --hide-marker-traits --dest ../`
+2. Then, we need to call Aeneas to actually perform the translation to Lean:
+   `aeneas/bin/aeneas -backend lean tutorial.llbc`
