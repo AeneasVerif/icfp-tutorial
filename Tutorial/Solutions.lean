@@ -80,9 +80,9 @@ open CList
 /-- Theorem about `list_nth_mut1`: verbose version -/
 theorem list_nth_mut1_spec {T: Type} [Inhabited T] (l : CList T) (i : U32)
   (h : i.val < l.toList.length) :
-  ∃ x back, list_nth_mut1 T l i = ok (x, back) ∧
+  ∃ x back, list_nth_mut1 l i = ok (x, back) ∧
   x = l.toList.index i.toNat ∧
-  ∀ x', ∃ l', back x' = ok l' ∧ l'.toList = l.toList.update i.toNat x' := by
+  ∀ x', ∃ l', back x' = l' ∧ l'.toList = l.toList.update i.toNat x' := by
   rw [list_nth_mut1, list_nth_mut1_loop]
   split
   . rename_i hd tl
@@ -103,7 +103,7 @@ theorem list_nth_mut1_spec {T: Type} [Inhabited T] (l : CList T) (i : U32)
         simp only [hUpdate]
     . simp at *
       progress as ⟨ i1, hi1 ⟩
-      progress as ⟨ tl1, back, htl1 ⟩
+      progress as ⟨ tl1, back, htl1, ih ⟩
       simp
       split_conjs
       . have hIndex := List.index_nzero_cons hd tl.toList i.toNat (by scalar_tac)
@@ -113,13 +113,12 @@ theorem list_nth_mut1_spec {T: Type} [Inhabited T] (l : CList T) (i : U32)
         simp only [hiEq]
       . -- Backward function
         intro x'
-        progress as ⟨ tl2, htl2 ⟩
-        simp
         have hUpdate := List.update_nzero_cons hd tl.toList i.toNat x' (by scalar_tac)
         simp only [hUpdate]
-        simp only [htl2]
-        have hiEq : i1.toNat = i.toNat - 1 := by scalar_tac
-        simp only [hiEq]
+        simp at ih
+        have hiEq : (i1: ℤ).toNat = i.toNat - 1 := by scalar_tac
+        rw [← hiEq]
+        simp [ih]
   . simp_all
     scalar_tac
 
@@ -132,9 +131,9 @@ theorem list_nth_mut1_spec {T: Type} [Inhabited T] (l : CList T) (i : U32)
  -/
 theorem list_nth_mut1_spec' {T: Type} [Inhabited T] (l : CList T) (i : U32)
   (h : i.val < l.toList.length) :
-  ∃ x back, list_nth_mut1 T l i = ok (x, back) ∧
+  ∃ x back, list_nth_mut1 l i = ok (x, back) ∧
   x = l.toList.index i.toNat ∧
-  ∀ x', ∃ l', back x' = ok l' ∧ l'.toList = l.toList.update i.toNat x' := by
+  ∀ x', ∃ l', back x' = l' ∧ l'.toList = l.toList.update i.toNat x' := by
   rw [list_nth_mut1, list_nth_mut1_loop]
   split
   . split
@@ -145,13 +144,13 @@ theorem list_nth_mut1_spec' {T: Type} [Inhabited T] (l : CList T) (i : U32)
         simp_all
     . simp at *
       progress as ⟨ i1 ⟩
-      progress as ⟨ tl1, back ⟩
+      progress as ⟨ tl1, back, _, ih ⟩
       simp
       split_conjs
       . simp [*]
       . -- Backward function
         intro x'
-        progress as ⟨ tl2 ⟩
+        simp at ih
         simp [*]
   . simp_all
     scalar_tac
@@ -159,8 +158,8 @@ theorem list_nth_mut1_spec' {T: Type} [Inhabited T] (l : CList T) (i : U32)
 /-- Theorem about `list_tail`: verbose version -/
 @[pspec]
 theorem list_tail_spec {T : Type} (l : CList T) :
-  ∃ back, list_tail T l = ok (CList.CNil, back) ∧
-  ∀ tl', ∃ l', back tl' = ok l' ∧ l'.toList = l.toList ++ tl'.toList := by
+  ∃ back, list_tail l = ok (CList.CNil, back) ∧
+  ∀ tl', ∃ l', back tl' = l' ∧ l'.toList = l.toList ++ tl'.toList := by
   rw [list_tail, list_tail_loop]
   split
   . rename_i hd tl
@@ -170,19 +169,17 @@ theorem list_tail_spec {T : Type} (l : CList T) :
     simp
     -- Proving the post-condition about the backward function
     intro tl1
-    progress as ⟨ tl2, htl2 ⟩
-    -- Simplify the `toList` and the equality
-    simp
-    -- Finish
-    simp only [htl2]
+    -- Simplify the existential quantification in
+    simp at hBack
+    simp [hBack]
   . -- Quite a few things automatically happen here
     simp
 
 /-- Theorem about `list_tail: simple version -/
 @[pspec]
 theorem list_tail_spec' {T : Type} (l : CList T) :
-  ∃ back, list_tail T l = ok (CList.CNil, back) ∧
-  ∀ tl', ∃ l', back tl' = ok l' ∧ l'.toList = l.toList ++ tl'.toList := by
+  ∃ back, list_tail l = ok (CList.CNil, back) ∧
+  ∀ tl', ∃ l', back tl' = l' ∧ l'.toList = l.toList ++ tl'.toList := by
   rw [list_tail, list_tail_loop]
   split
   . simp
@@ -190,24 +187,23 @@ theorem list_tail_spec' {T : Type} (l : CList T) :
     simp
     -- Proving the post-condition about the backward function
     intro tl'
-    progress
-    simp [*]
+    simp_all
   . simp
 
 /-- Theorem about `append_in_place` -/
 @[pspec]
 theorem append_in_place_spec {T : Type} (l0 l1 : CList T) :
-  ∃ l2, append_in_place T l0 l1 = ok l2 ∧
+  ∃ l2, append_in_place l0 l1 = ok l2 ∧
   l2.toList = l0.toList ++ l1.toList := by
   rw [append_in_place]
   progress as ⟨ tl, back ⟩
-  progress as ⟨ l2 ⟩
+  simp at back
   -- Nothing much to do here
   simp [*]
 
 @[pspec]
 theorem reverse_loop_spec {T : Type} (l : CList T) (out : CList T) :
-  ∃ l', reverse_loop T l out = ok l' ∧
+  ∃ l', reverse_loop l out = ok l' ∧
   l'.toList = l.toList.reverse ++ out.toList := by
   rw [reverse_loop]
   split
@@ -217,7 +213,7 @@ theorem reverse_loop_spec {T : Type} (l : CList T) (out : CList T) :
   . simp
 
 theorem reverse_spec {T : Type} (l : CList T) :
-  ∃ l', reverse T l = ok l' ∧
+  ∃ l', reverse l = ok l' ∧
   l'.toList = l.toList.reverse := by
   rw [reverse]
   progress as ⟨ l', hl' ⟩
@@ -255,8 +251,8 @@ theorem zero_loop_spec
   split
   . progress as ⟨ _ ⟩
     progress as ⟨ i1 ⟩
-    progress as ⟨ x1 ⟩
-    progress as ⟨ x2, _, hSame, hZero ⟩
+    progress as ⟨ x1, _, hSame, hZero ⟩
+    progress
     simp_all
     split_conjs
     . intro j h0
@@ -373,7 +369,6 @@ theorem add_no_overflow_loop_spec
       scalar_tac
     progress as ⟨ i' ⟩
     progress as ⟨ x1 ⟩
-    progress as ⟨ x2 ⟩
     . -- This precondition is not proven automatically
       intro j h0 h1
       simp_all
@@ -439,7 +434,6 @@ theorem add_with_carry_loop_spec
       progress as ⟨ _ ⟩
       progress as ⟨ i1 ⟩
       progress as ⟨ x1 ⟩
-      progress as ⟨ c4, x2 ⟩
       -- Proving the post-condition
       simp_all [toInt]
       have hxUpdate := toInt_aux_update x.val i.toNat s2 (by scalar_tac)
