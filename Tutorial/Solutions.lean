@@ -116,9 +116,8 @@ theorem list_nth_mut1_spec {T: Type} [Inhabited T] (l : CList T) (i : U32)
         have hUpdate := List.update_nzero_cons hd tl.toList i.toNat x' (by scalar_tac)
         simp only [hUpdate]
         -- simp at ih
-        have hiEq : (i1: ℤ).toNat = i.toNat - 1 := by scalar_tac
-        rw [← hiEq]
-        simp [ih]
+        have hiEq : i.toNat - 1 = (i1: ℤ).toNat := by scalar_tac
+        simp only [hiEq, ih]
   . simp_all
     scalar_tac
 
